@@ -17,7 +17,7 @@ architecture RTL of MUX41 is
   signal rate : std_logic;
 begin
   tick_br <= rate;
-  process (clk, rst, selector, tick_br0, tick_br1, tick_br2, tick_br3)
+  process (selector, tick_br0, tick_br1, tick_br2, tick_br3)
 begin
   case selector is
     when "00" => rate <= tick_br0;
