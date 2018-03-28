@@ -5,8 +5,7 @@ library IEEE;
 -------------------------------
 entity MUX41 is
 -------------------------------
-port (CLK, RST :in std_logic;
-      tick_br0, tick_br1, tick_br2, tick_br3 :in std_logic;
+port (tick_br0, tick_br1, tick_br2, tick_br3 :in std_logic;
       selector :in std_logic_vector (1 downto 0);
       tick_br :out std_logic);
 end entity MUX41;
