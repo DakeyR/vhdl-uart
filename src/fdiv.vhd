@@ -21,10 +21,7 @@ Entity FDIV is
     Generic (  Fclock : positive := 50E6); -- System Clock Freq in Hertz
     Port (     CLK : in  std_logic;
                RST : in  std_logic;
-               Tick9us : out std_logic;
-               Tick18us : out std_logic;
-               Tick52us : out std_logic;
-               Tick104us : out std_logic);
+               ticks: out std_logic_vector(3 downto 0));
 end FDIV;
 
     -- ---------------------------------------
@@ -47,10 +44,10 @@ Architecture RTL of FDIV is
 
 begin
 
-    Tick9us  <= Tick9us_i;
-    Tick18us  <= Tick18us_i;
-    Tick52us <= Tick52us_i;
-    Tick104us <= Tick104us_i;
+    ticks(0) <= Tick9us_i;
+    ticks(1) <= Tick18us_i;
+    ticks(2) <= Tick52us_i;
+    ticks(3) <= Tick104us_i;
 
     process (RST,CLK)
     begin
