@@ -18,7 +18,7 @@ architecture MAE of MAE_Emission is
   signal i: natural;
   signal reg: std_logic_vector (9 downto 0);
 begin
-  process (clk, rst, tick_bit)
+  process (clk, rst)
   begin
     if rst = '1' then
       State <= E0;
