@@ -3,27 +3,16 @@ library IEEE;
   use IEEE.numeric_std.ALL;
 
 -------------------------------
-entity MUX41 is
+entity MUX4V1 is
 -------------------------------
-port (tick_br0, tick_br1, tick_br2, tick_br3 :in std_logic;
+port (I :in std_logic_vector (3 downto 0);
       selector :in std_logic_vector (1 downto 0);
-      tick_br :out std_logic);
-end entity MUX41;
+      Y :out std_logic);
+end entity MUX4V1;
 
 -------------------------------
-architecture RTL of MUX41 is
+architecture RTL of MUX4V1 is
 -------------------------------
-  signal rate : std_logic;
 begin
-  tick_br <= rate;
-  process (selector, tick_br0, tick_br1, tick_br2, tick_br3)
-begin
-  case selector is
-    when "00" => rate <= tick_br0;
-    when "01" => rate <= tick_br1;
-    when "10" => rate <= tick_br2;
-    when "11" => rate <= tick_br3;
-    when others => rate <= tick_br0;
-  end case;
-end process;
+  Y <= I(to_integer(unsigned(selector)));
 end architecture;
