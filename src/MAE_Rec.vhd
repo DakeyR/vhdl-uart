@@ -17,7 +17,8 @@ architecture MAE of MAE_Reception is
   type StateType is (E0, E1, E2, E3, E4, E5, E6, E7, E8, ER);
   signal State: StateType;
   signal i: natural;
-  signal reg: std_logic_vector (9 downto 0);
+  signal ticks: natural;
+  signal reg: std_logic_vector (7 downto 0);
 begin
   process (clk, rst)
   begin
@@ -27,6 +28,7 @@ begin
       Dav <= '0';
     elsif rising_edge(clk) then
       if tick_bit = '1' then
+        ticks <= ticks + 1;
         case State is
           when E0 =>  if Rx = '0' then
                         State <= E1;
