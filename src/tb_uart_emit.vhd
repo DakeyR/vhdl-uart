@@ -46,6 +46,9 @@ begin
     Go <= '1';
 
     wait for 104 us;
+    wait for 104 us;
+
+    wait for 104 us;
     counter <= 0;
     if Tx /= '0' then
       OK <= False;
@@ -55,7 +58,7 @@ begin
 
     wait for 104 us;
     counter <= 1;
-    if Tx /= '0' then
+    if Tx /= '1' then
       OK <= False;
     else
       OK <= True;
@@ -71,7 +74,7 @@ begin
 
     wait for 104 us;
     counter <= 3;
-    if Tx /= '0' then
+    if Tx /= '1' then
       OK <= False;
     else
       OK <= True;
@@ -79,7 +82,7 @@ begin
 
     wait for 104 us;
     counter <= 4;
-    if Tx /= '0' then
+    if Tx /= '1' then
       OK <= False;
     else
       OK <= True;
@@ -87,7 +90,7 @@ begin
 
     wait for 104 us;
     counter <= 5;
-    if Tx /= '1' then
+    if Tx /= '0' then
       OK <= False;
     else
       OK <= True;
@@ -95,7 +98,7 @@ begin
 
     wait for 104 us;
     counter <= 6;
-    if Tx /= '1' then
+    if Tx /= '0' then
       OK <= False;
     else
       OK <= True;
@@ -111,7 +114,7 @@ begin
 
     wait for 104 us;
     counter <= 8;
-    if Tx /= '1' then
+    if Tx /= '0' then
       OK <= False;
     else
       OK <= True;

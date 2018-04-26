@@ -35,7 +35,7 @@ begin
           when E1 =>  State <= E2;
                       Tx <= reg(i);
                       i <= i + 1;
-          when E2 =>  if i = 9 then
+          when E2 =>  if i > 9 then
                         State <= E3;
                         i <= 0;
                         Tx_Busy <= '0';
