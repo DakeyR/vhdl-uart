@@ -16,6 +16,7 @@ architecture MAE of MAE_Reception is
 -----------------------------------
   type StateType is (E0, E1, E2, E3, E4, E5, E6, E7, E8, ER);
   signal State: StateType;
+  signal j: std_logic;
   signal i: natural;
   signal ticks: natural;
   signal reg: std_logic_vector (7 downto 0);
@@ -23,6 +24,7 @@ begin
   process (clk, rst)
   begin
     if rst = '1' then
+      j <= '0';
       State <= E0;
       Clear <= '0';
       i <= 0;
@@ -38,8 +40,11 @@ begin
                     end if;
         when E1 =>  State <= E2;
                     Clear <= '0';
-        when E2 =>  if tick_bit = '1' then
+        when E2 =>  if tick_bit = '1' and j = '0' then
                       State <= E3;
+                      j <= '1';
+                    elsif tick_bit = '1' and j = '1' then
+                      j <= '0';
                     end if;
         when E3 =>  if Rx = '1' then
                       State <= ER;
@@ -48,19 +53,28 @@ begin
                       State <= E4;
                       i <= 0;
                     end if;
-        when E4 =>  if tick_bit = '1' then
+        when E4 =>  if tick_bit = '1' and j = '0' then
                       State <= E5;
                       reg(i) <= Rx;
                       i <= i + 1;
+                      j <= '1';
+                    elsif tick_bit = '1' and j = '1' then
+                      j <= '0';
                     end if;
         when E5 =>  if i > 7 then
                       State <= E6;
-                    elsif tick_bit = '1' then
+                    elsif tick_bit = '1' and j = '0' then
                       reg(i) <= Rx;
                       i <= i + 1;
+                      j <= '1';
+                    elsif tick_bit = '1' and j = '1' then
+                      j <= '0';
                     end if;
-        when E6 =>  if tick_bit = '1' then
+        when E6 =>  if tick_bit = '1' and j = '0' then
                       State <= E7;
+                      j <= '1';
+                    elsif tick_bit = '1' and j = '1' then
+                      j <= '0';
                     end if;
         when E7 =>  if Rx = '1' then
                       State <= E8;

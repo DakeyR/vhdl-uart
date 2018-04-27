@@ -45,18 +45,12 @@ begin
     Rx <= '0';
 
     wait for 104 us;
-    wait for 104 us;
-    wait for 104 us;
-    wait for 104 us;
-    wait for 104 us;
 
     while i < 8 loop
       Rx <= Data(i);
       i <= i + 1;
       wait for 104 us;
     end loop;
-    wait for 104 us;
-    wait for 104 us;
     Rx <= '1';
     wait for 104 us;
     Rx <= '0';
