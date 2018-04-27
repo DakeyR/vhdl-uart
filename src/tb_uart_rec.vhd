@@ -1,5 +1,5 @@
 
--- Banc de test pour l'emission (UART)
+-- Banc de test pour la reception (UART)
 
 entity rec_tb is
 port( OK: out Boolean := True);
@@ -64,7 +64,7 @@ begin
     wait;
   end process;
 
-  Emiter: entity work.UART_Reception port map(clk => Clock, rst => Reset, Dav => Dav,
+  Receiver: entity work.UART_Reception port map(clk => Clock, rst => Reset, Dav => Dav,
                                       SEL => Baudsel, Dout => Dout,
                                       Rx_Err => Rx_Error, Rx => Rx);
 

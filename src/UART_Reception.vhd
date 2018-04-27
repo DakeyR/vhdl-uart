@@ -14,11 +14,19 @@ end entity UART_Reception;
 
 architecture RTL of UART_Reception is
   signal ticks : std_logic_vector (3 downto 0);
-  signal rate: std_logic;
+  signal rate, Clear: std_logic;
+  signal res_fdiv: std_logic;
 begin
-  FDIV: entity work.FDIV port map(clk => clk, rst => rst, ticks => ticks);
-  MUX: entity work.MUX4V1 port map(I => ticks, selector => SEL, Y => rate);
+  Proc: process
+  begin
+    res_fdiv <= rst or Clear;
+  end process;
+  TickSel: process
+  begin
+    rate <= ticks(2) xor ticks(3);
+  end process;
+  FDIV: entity work.FDIV port map(clk => clk, rst => res_fdiv, ticks => ticks);
   MAE: entity work.MAE_Reception port map(clk => clk, rst => rst, Rx => Rx,
-                                    tick_bit => rate, Dout => Dout,
+                                    tick_bit => rate, Dout => Dout, Clear => Clear,
                                     Dav => Dav, Rx_Error => Rx_err);
 end architecture;
