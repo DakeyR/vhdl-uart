@@ -29,6 +29,8 @@ begin
       Clear <= '0';
       i <= 0;
       Dav <= '0';
+      Dout <= (others => '0');
+      Rx_Error <= '0';
     elsif rising_edge(clk) then
       --if tick_bit = '1' then
       --  ticks <= ticks + 1;
@@ -84,8 +86,10 @@ begin
                       State <= ER;
                       Rx_Error <= '1';
                     end if;
-        when E8 =>  if Rx = '0' then
+        when E8 =>  i <= 0;
+                    if Rx = '0' then
                       State <= E0;
+                      Dout <= (others => '0');
                       Dav <= '0';
                     end if;
         when ER => Rx_Error <= '1';
