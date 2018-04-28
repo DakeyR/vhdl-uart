@@ -7,7 +7,6 @@ entity MAE_Emission is
 -------------------------------
 port (tick_bit, clk, rst, go :in std_logic;
       din :in std_logic_vector (7 downto 0);
-      pout:out std_logic_vector (9 downto 0);
       Tx, Tx_Busy :out std_logic);
 end entity MAE_Emission;
 
@@ -25,32 +24,29 @@ begin
       State <= E0;
       Tx <= '1';
       Tx_Busy <= '0';
-      pout <= (others => '0');
       i <= 0;
+      reg <= (others => '1');
     elsif rising_edge(clk) then
         case State is
           when E0 =>  if go = '1' then
                         State <= E1;
-                        reg <= '1' & Din & '0';
-                        i <= 0;
-                        Tx_Busy <= '1';
                       end if;
-          when E1 =>  if tick_bit = '1' then
+          when E1 =>  reg <= '1' & Din & '0';
+                      i <= 0;
+                      Tx_Busy <= '1';
+                      if tick_bit = '1' then
                         State <= E2;
+                      end if;
+          when E2 =>  if tick_bit = '1' then
                         Tx <= reg(i);
-                        pout(i) <= reg(i);
                         i <= i + 1;
                       end if;
-          when E2 =>  if i > 9 then
+                      if i > 9 then
                         State <= E3;
-                        i <= 0;
-                        Tx_Busy <= '0';
-                      elsif tick_bit = '1' then
-                        Tx <= reg(i);
-                        pout(i) <= reg(i);
-                        i <= i + 1;
                       end if;
-          when E3 =>  if go = '0' then
+          when E3 =>  i <= 0;
+                      Tx_Busy <= '0';
+                      if go = '0' then
                         State <= E0;
                       end if;
         end case;

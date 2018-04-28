@@ -8,7 +8,6 @@ entity UART_Emission is
 port (clk, rst, go :in std_logic;
       din :in std_logic_vector (7 downto 0);
       SEL :in std_logic_vector (1 downto 0);
-      pout :out std_logic_vector (9 downto 0);
       Tx, Tx_Busy :out std_logic);
 end entity UART_Emission;
 
@@ -19,6 +18,6 @@ begin
   FDIV: entity work.FDIV port map(clk => clk, rst => rst, ticks => ticks);
   MUX: entity work.MUX4V1 port map(I => ticks, selector => SEL, Y => rate);
   MAE: entity work.MAE_Emission port map(clk => clk, rst => rst, go => go,
-                                    din => din, tick_bit => rate, pout => pout,
+                                    din => din, tick_bit => rate,
                                     Tx => tx, Tx_busy => Tx_Busy);
 end architecture;

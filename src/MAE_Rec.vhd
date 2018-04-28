@@ -30,19 +30,21 @@ begin
       i <= 0;
       Dav <= '0';
       Dout <= (others => '0');
+      reg <= (others => '1');
       Rx_Error <= '0';
     elsif rising_edge(clk) then
       --if tick_bit = '1' then
       --  ticks <= ticks + 1;
       case State is
-        when E0 =>  if Rx = '0' then
+        when E0 =>  Dav <= '0';
+                    if Rx = '0' then
                       State <= E1;
-                      Clear <= '1';
-                      Rx_Error <= '0';
                     end if;
-        when E1 =>  State <= E2;
-                    Clear <= '0';
-        when E2 =>  if tick_bit = '1' and j = '0' then
+        when E1 =>  Clear <= '1';
+                    Rx_Error <= '0';
+                    State <= E2;
+        when E2 =>  Clear <= '0';
+                    if tick_bit = '1' and j = '0' then
                       State <= E3;
                       j <= '1';
                     elsif tick_bit = '1' and j = '1' then
@@ -50,12 +52,11 @@ begin
                     end if;
         when E3 =>  if Rx = '1' then
                       State <= ER;
-                      Rx_Error <= '1';
                     else
                       State <= E4;
-                      i <= 0;
                     end if;
-        when E4 =>  if tick_bit = '1' and j = '0' then
+        when E4 =>  i <= 0;
+                    if tick_bit = '1' and j = '0' then
                       State <= E5;
                       reg(i) <= Rx;
                       i <= i + 1;
@@ -65,7 +66,8 @@ begin
                     end if;
         when E5 =>  if i > 7 then
                       State <= E6;
-                    elsif tick_bit = '1' and j = '0' then
+                    end if;
+                    if tick_bit = '1' and j = '0' then
                       reg(i) <= Rx;
                       i <= i + 1;
                       j <= '1';
@@ -74,23 +76,22 @@ begin
                     end if;
         when E6 =>  if tick_bit = '1' and j = '0' then
                       State <= E7;
-                      j <= '1';
+                    --  j <= '1';
                     elsif tick_bit = '1' and j = '1' then
                       j <= '0';
                     end if;
         when E7 =>  if Rx = '1' then
                       State <= E8;
-                      Dout <= reg;
-                      Dav <= '1';
                     else
                       State <= ER;
-                      Rx_Error <= '1';
                     end if;
-        when E8 =>  i <= 0;
+        when E8 =>  Dout <= reg;
+                    Dav <= '1';
+                    --i <= 0;
                     if Rx = '0' then
                       State <= E0;
-                      Dout <= (others => '0');
-                      Dav <= '0';
+                      --Dout <= (others => '0');
+                      --Dav <= '0';
                     end if;
         when ER => Rx_Error <= '1';
       end case;

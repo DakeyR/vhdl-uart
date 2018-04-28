@@ -32,7 +32,6 @@ EMIT: entity work.UART_Emission
             go      => go,
             din     => SW(7 downto 0),
             SEL     => SW(10 downto 9),
-            pout    => LEDR(9 downto 0),
             Tx      => UART_TXD,
             Tx_Busy => LEDR(17));
 REC: entity work.UART_Reception
