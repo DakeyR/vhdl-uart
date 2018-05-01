@@ -26,6 +26,7 @@ SIGNAL  state: STD_LOGIC_VECTOR(3 downto 0);
 SIGNAL  echo: std_logic;
 SIGNAL  trigg: std_logic;
 SIGNAL  data: std_logic_vector(15 downto 0);
+signal  ticks: std_logic_vector(3 downto 0);
 
 BEGIN 
 
@@ -34,10 +35,16 @@ BEGIN
   MIDH: entity work.SEVEN_SEG(COMB) port map (Data => data(11 downto 8), Pol => pol, Segout => HEX2);
   HIGH: entity work.SEVEN_SEG(COMB) port map (Data => data(15 downto 12), Pol => pol, Segout => HEX3);
 
+  FDIV: entity work.FDIV
+        port map (CLK   => CLOCK_50,
+                  RST   => rst,
+                  ticks => ticks);
+
   Ultra: entity work.Ultrasound
          port map(clk     => CLOCK_50,
                   rst     => rst,
                   go      => go,
+                  mic     => ticks(0),
                   echo    => GPIO_1(9),
                   s       => state,
                   trigger => trigg,

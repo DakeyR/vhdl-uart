@@ -5,7 +5,7 @@ library IEEE;
 -------------------------------
 entity Ultrasound is
 -------------------------------
-port (clk, rst, go, echo:in std_logic;
+port (clk, rst, go, mic, echo:in std_logic;
       s:out std_logic_vector(3 downto 0);
       trigger:out std_logic;
       e_o :out std_logic;
@@ -35,10 +35,9 @@ begin
                       trigger <= '1';
                     end if;
                     s <= "0000";
-        when E1 =>  if i <= 500 then
+        when E1 =>  if mic = '1' and i <= 500 then
                       i <= i + 1;
-                    else
-      --                d <= std_logic_vector(to_unsigned(i, 16));
+                    elsif i > 500 then
                       trigger <= '0';
                     end if;
                     if echo = '1' then
@@ -46,15 +45,15 @@ begin
                       i <= 0;
                     end if;
                     s <= "0001";
-        when E2 =>  if echo = '1' then
+        when E2 =>  if mic = '1' and echo = '1' then
                       i <= i + 1;
                       trigger <= '0';
-                    else
+                    elsif echo = '0' then
                       State <= E3;
                     end if;
                     s <= "0010";
         when E3 =>
-                    d <= std_logic_vector(to_unsigned(17 * i / 100000, 16));
+                    d <= std_logic_vector(to_unsigned(17 * i / 100, 16));
                     s <= "0011";
       end case;
     end if;
