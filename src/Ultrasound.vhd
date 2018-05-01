@@ -7,7 +7,8 @@ entity Ultrasound is
 -------------------------------
 port (clk, rst, go, echo:in std_logic;
       s:out std_logic_vector(3 downto 0);
-      trigger:in std_logic;
+      trigger:out std_logic;
+      e_o :out std_logic;
       d:out std_logic_vector(15 downto 0));
 end entity Ultrasound;
 
@@ -21,21 +22,23 @@ begin
     if rst = '1' then
       State <= E0;
       s <= (others => '0');
-      --trigger <= '0';
+      trigger <= '0';
+      --echo <= '0';
       i <= 0;
       d <= (others => '0');
     elsif rising_edge(clk) then
-      d(0) <= trigger;
-      d(1) <= echo;
+      e_o <= echo;
       case State is
         when E0 =>  if go = '1' then
                       State <= E1;
+                      i <= 0;
+                      trigger <= '1';
                     end if;
                     s <= "0000";
-        when E1 =>  if i <= 520 then
+        when E1 =>  if i <= 500 then
                       i <= i + 1;
-                      trigger <= '1';
                     else
+      --                d <= std_logic_vector(to_unsigned(i, 16));
                       trigger <= '0';
                     end if;
                     if echo = '1' then
@@ -46,9 +49,6 @@ begin
         when E2 =>  if echo = '1' then
                       i <= i + 1;
                       trigger <= '0';
-                      --if i > 700 then
-                      --  State <= E3;
-                      --end if;
                     else
                       State <= E3;
                     end if;
