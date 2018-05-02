@@ -16,6 +16,7 @@ architecture MAE of Ultrasound is
   type StateType is (E0, E1, E2, E3);
   signal State: StateType;
   signal i: natural;
+  signal j: natural;
 begin
   process(clk,rst)
   begin
@@ -35,7 +36,7 @@ begin
                       trigger <= '1';
                     end if;
                     s <= "0000";
-        when E1 =>  if mic = '1' and i <= 500 then
+        when E1 =>  if i < 500 then
                       i <= i + 1;
                     elsif i > 500 then
                       trigger <= '0';
@@ -45,15 +46,14 @@ begin
                       i <= 0;
                     end if;
                     s <= "0001";
-        when E2 =>  if mic = '1' and echo = '1' then
+        when E2 =>  if echo = '1' then
                       i <= i + 1;
-                      trigger <= '0';
                     elsif echo = '0' then
                       State <= E3;
                     end if;
                     s <= "0010";
-        when E3 =>
-                    d <= std_logic_vector(to_unsigned(17 * i / 100, 16));
+        when E3 =>  
+                    d <= std_logic_vector(to_unsigned(17 * i / 100000, 16));
                     s <= "0011";
       end case;
     end if;

@@ -10,7 +10,7 @@ ENTITY DE2_top IS
 		SW :  IN  STD_LOGIC_VECTOR(17 DOWNTO 0);
     LEDG: OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
     LEDR: out  STD_LOGIC_VECTOR(15 DOWNTO 0);
-    GPIO_1: inout STD_LOGIC_VECTOR(35 DOWNTO 0);
+    GPIO_0: inout STD_LOGIC_VECTOR(35 DOWNTO 0);
     HEX0: out STD_LOGIC_VECTOR(0 to 6);
     HEX1: out STD_LOGIC_VECTOR(0 to 6);
     HEX2: out STD_LOGIC_VECTOR(0 to 6);
@@ -45,7 +45,7 @@ BEGIN
                   rst     => rst,
                   go      => go,
                   mic     => ticks(0),
-                  echo    => GPIO_1(9),
+                  echo    => GPIO_0(9),
                   s       => state,
                   trigger => trigg,
                   e_o     => LEDG(1),
@@ -55,7 +55,7 @@ BEGIN
   go <= not(KEY(1));
   rst <= not(KEY(0));
   pol <= SW(17);
-  trigg <= GPIO_1(10);
+  trigg <= GPIO_0(8);
   LEDG(7 downto 4) <= state;
   LEDG(0) <= go;
 
