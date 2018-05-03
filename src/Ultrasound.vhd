@@ -30,30 +30,36 @@ begin
     elsif rising_edge(clk) then
       e_o <= echo;
       case State is
-        when E0 =>  if go = '1' then
+        when E0 =>  --if go = '1' then
                       State <= E1;
                       i <= 0;
                       trigger <= '1';
-                    end if;
+                    --end if;
                     s <= "0000";
         when E1 =>  if i < 500 then
                       i <= i + 1;
-                    elsif i > 500 then
+                    else
                       trigger <= '0';
                     end if;
                     if echo = '1' then
+                      trigger <= '0';
                       State <= E2;
                       i <= 0;
                     end if;
                     s <= "0001";
         when E2 =>  if echo = '1' then
                       i <= i + 1;
-                    elsif echo = '0' then
+                    else --if echo = '0' then
                       State <= E3;
+                      j <= 0;
                     end if;
                     s <= "0010";
-        when E3 =>  
-                    d <= std_logic_vector(to_unsigned(17 * i / 100000, 16));
+        when E3 =>  if j < 500000 then
+                      j <= j + 1;
+                    else
+                      State <= E0;
+                    end if;
+                    d <= std_logic_vector(to_unsigned(17 * i / 50000, 16));
                     s <= "0011";
       end case;
     end if;
